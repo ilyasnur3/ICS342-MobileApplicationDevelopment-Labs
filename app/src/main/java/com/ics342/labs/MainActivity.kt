@@ -60,12 +60,21 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun DataItemView(dataItem: DataItem) {
-    /* Create the view for the data item her. */
+    Column {
+        Text(text = "ID: ${dataItem.id}")
+        Text(text = "Name: ${dataItem.name}", fontWeight = FontWeight.Bold)
+        Text(text = "Description: ${dataItem.description}", fontSize = 12.sp)
+    }
 }
 
 @Composable
 fun DataItemList(dataItems: List<DataItem>) {
-    /* Create the list here. This function will call DataItemView() */
+    Column {
+        dataItems.forEach { dataItem ->
+            DataItemView(dataItem)
+            Spacer(Modifier.height(8.dp))
+        }
+    }
 }
 
 @Preview(showBackground = true)
