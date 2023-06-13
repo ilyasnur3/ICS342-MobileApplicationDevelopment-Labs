@@ -3,15 +3,26 @@ package com.ics342.labs
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Divider
 import com.ics342.labs.data.DataItem
 import com.ics342.labs.ui.theme.LabsTheme
+
 
 private val dataItems = listOf(
     DataItem(1, "Item 1", "Description 1"),
@@ -42,8 +53,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             LabsTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android")
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    DataItemList(dataItems)
                 }
             }
         }
@@ -60,27 +71,52 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun DataItemView(dataItem: DataItem) {
-    Column {
-        Text(text = "ID: ${dataItem.id}")
-        Text(text = "Name: ${dataItem.name}", fontWeight = FontWeight.Bold)
-        Text(text = "Description: ${dataItem.description}", fontSize = 12.sp)
-    }
-}
-
-@Composable
-fun DataItemList(dataItems: List<DataItem>) {
-    Column {
-        dataItems.forEach { dataItem ->
-            DataItemView(dataItem)
-            Spacer(Modifier.height(8.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "ID: ${dataItem.id}",
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Greeting(name = dataItem.name) // Use the Greeting function here
+            Text(
+                text = dataItem.name,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+            Text(
+                text = dataItem.description,
+                fontSize = 16.sp
+            )
         }
     }
 }
+
+
+
+
+@Composable
+fun DataItemList(dataItems: List<DataItem>) {
+    LazyColumn {
+        items(dataItems) { dataItem ->
+            DataItemView(dataItem)
+            Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
+        }
+    }
+}
+
+
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     LabsTheme {
-        Greeting("Android")
+        DataItemList(dataItems)
     }
 }
