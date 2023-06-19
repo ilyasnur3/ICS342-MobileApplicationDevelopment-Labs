@@ -8,18 +8,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
+import androidx.compose.ui.tooling.preview.Preview
 import com.ics342.labs.data.DataItem
 import com.ics342.labs.ui.theme.LabsTheme
 
@@ -52,14 +53,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LabsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colorScheme.background) {
                     DataItemList(dataItems)
                 }
             }
         }
     }
-}
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -98,15 +96,35 @@ fun DataItemView(dataItem: DataItem) {
     }
 }
 
-
-
-
 @Composable
 fun DataItemList(dataItems: List<DataItem>) {
+    val selectedItem by remember { mutableStateOf<DataItem?>(null) }
+    var showDialog by remember { mutableStateOf(false) }
+
     LazyColumn {
         items(dataItems) { dataItem ->
             DataItemView(dataItem)
             Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
+        }
+    }
+    selectedItem?.let { item ->
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showDialog = false
+                },
+                title = { Text(text = item.name) },
+                text = { Text(text = item.description) },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            showDialog = false
+                        }
+                    ) {
+                        Text(text = "Okay")
+                    }
+                }
+            )
         }
     }
 }
@@ -115,7 +133,7 @@ fun DataItemList(dataItems: List<DataItem>) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun DataItemListPreview() {
     LabsTheme {
         DataItemList(dataItems)
     }
