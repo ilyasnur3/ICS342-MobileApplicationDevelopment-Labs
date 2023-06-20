@@ -3,6 +3,7 @@ package com.ics342.labs
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,11 +69,12 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun DataItemView(dataItem: DataItem) {
+fun DataItemView(dataItem: DataItem, onItemClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .clickable { onItemClick() }
     ) {
         Text(
             text = "ID: ${dataItem.id}",
@@ -98,12 +100,15 @@ fun DataItemView(dataItem: DataItem) {
 
 @Composable
 fun DataItemList(dataItems: List<DataItem>) {
-    val selectedItem by remember { mutableStateOf<DataItem?>(null) }
+    var selectedItem by remember { mutableStateOf<DataItem?>(null) }
     var showDialog by remember { mutableStateOf(false) }
 
     LazyColumn {
         items(dataItems) { dataItem ->
-            DataItemView(dataItem)
+            DataItemView(dataItem, onItemClick = {
+                selectedItem = dataItem
+                showDialog = true
+            })
             Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
         }
     }
