@@ -9,15 +9,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
@@ -54,11 +59,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LabsTheme {
-                    DataItemList(dataItems)
+                val navController = rememberNavController()
+
+                NavHost(navController, startDestination = "main") {
+                    composable("main") {
+                        DataItemList(dataItems, navController)
+                    }
+                    composable(
+                        "details/{dataItemId}",
+                        arguments = listOf(navArgument("dataItemId") { type = NavType.IntType })
+                    ) { backStackEntry ->
+                        val dataItemId = backStackEntry.arguments?.getInt("dataItemId")
+                        if (dataItemId != null) {
+                            val dataItem = dataItems.find { it.id == dataItemId }
+                            if (dataItem != null) {
+                                DetailsScreen(dataItem)
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+}
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -99,47 +122,57 @@ fun DataItemView(dataItem: DataItem, onItemClick: () -> Unit) {
 }
 
 @Composable
-fun DataItemList(dataItems: List<DataItem>) {
-    var selectedItem by remember { mutableStateOf<DataItem?>(null) }
-    var showDialog by remember { mutableStateOf(false) }
-
+fun DataItemList(dataItems: List<DataItem>, navController: NavController) {
     LazyColumn {
         items(dataItems) { dataItem ->
             DataItemView(dataItem, onItemClick = {
-                selectedItem = dataItem
-                showDialog = true
+                navController.navigate("details/${dataItem.id}")
             })
             Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
         }
     }
-    selectedItem?.let { item ->
-        if (showDialog) {
-            AlertDialog(
-                onDismissRequest = {
-                    showDialog = false
-                },
-                title = { Text(text = item.name) },
-                text = { Text(text = item.description) },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            showDialog = false
-                        }
-                    ) {
-                        Text(text = "Okay")
-                    }
-                }
+}
+
+@Composable
+fun DetailsScreen(dataItem: DataItem) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "ID: ${dataItem.id}",
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Greeting(name = dataItem.name) // Use the Greeting function here
+            Text(
+                text = dataItem.name,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
             )
+            Text(
+                text = dataItem.description,
+                fontSize = 16.sp
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { /* Handle button click */ },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Go Back")
         }
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
 fun DataItemListPreview() {
     LabsTheme {
-        DataItemList(dataItems)
+        DataItemList(dataItems, rememberNavController())
     }
 }
