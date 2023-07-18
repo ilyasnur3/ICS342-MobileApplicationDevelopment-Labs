@@ -1,62 +1,63 @@
 [
   {
-    "id":  1,
-    "give_name": "Valeria",
-    "family_name": "Hope",
+    "id": 1,
+    "giveName": "Valeria",
+    "familyName": "Hope",
     "age": 31
   },
   {
-    "id":  2,
-    "give_name": "Oscar",
-    "family_name": "Jenkins",
+    "id": 2,
+    "giveName": "Oscar",
+    "familyName": "Jenkins",
     "age": 24
   },
   {
-    "id":  3,
-    "give_name": "Stella",
-    "family_name": "Jones",
+    "id": 3,
+    "giveName": "Stella",
+    "familyName": "Jones",
     "age": 58
   },
   {
-    "id":  4,
-    "give_name": "Giovanni",
-    "family_name": "Green",
+    "id": 4,
+    "giveName": "Giovanni",
+    "familyName": "Green",
     "age": 72
   },
   {
-    "id":  5,
-    "give_name": "Josie",
-    "family_name": "Brown",
+    "id": 5,
+    "giveName": "Josie",
+    "familyName": "Brown",
     "age": 65
   },
   {
-    "id":  6,
-    "give_name": "Zion",
-    "family_name": "Thomas",
+    "id": 6,
+    "giveName": "Zion",
+    "familyName": "Thomas",
     "age": 34
   },
   {
-    "id":  7,
-    "give_name": "Remington",
-    "family_name": "Nora",
+    "id": 7,
+    "giveName": "Remington",
+    "familyName": "Nora",
     "age": 87
   },
   {
-    "id":  8,
-    "give_name": "Theo",
-    "family_name": "Melenia",
+    "id": 8,
+    "giveName": "Theo",
+    "familyName": "Melenia",
     "age": 48
   },
   {
-    "id":  9,
-    "give_name": "Brantley",
-    "family_name": "Johnson",
+    "id": 9,
+    "giveName": "Brantley",
+    "familyName": "Johnson",
     "age": 39
   },
   {
-    "id":  10,
-    "give_name": "Atlas",
-    "family_name": "Jenkins",
+    "id": 10,
+    "giveName": "Atlas",
+    "familyName": "Jenkins",
     "age": 41
   }
 ]
+
