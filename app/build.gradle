@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.ics342.labs'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.ics342.labs"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -60,6 +60,7 @@ dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter')
     testImplementation('org.junit.jupiter:junit-jupiter-api')
     testImplementation 'io.mockk:mockk:1.13.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
